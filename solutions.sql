@@ -17,3 +17,15 @@ from
     supplierMaster sm
 inner join SupplyDetails sd on sd.sid = sm.sid
 where sd.pid <> 1;
+
+
+--3) List the part id, name, price and difference between price and average price of all parts.
+select 
+    pid, 
+    name,
+    price,
+    avg(price) over() as average_of_price,
+    price-average_of_price
+from 
+    PartMaster
+;
