@@ -1,13 +1,7 @@
 -- 1) List the month-wise average supply of parts supplied for all parts. Provide the information only if the average is higher than 20.
-select
-  monthname(dateofsupply) as month, 
-  avg(qtysupplied) as average 
- from 
-  SupplyDetails
-group by 
-  month
-having 
-  average > 20;
+select monthname(dateofsupply) as month, avg(qtysupplied) as average from SupplyDetails
+group by month
+having average > 20;
 
 
 -- 2) List the names of the Suppliers who do not supply part with PID ‘1’.
@@ -88,3 +82,31 @@ select
     end as price_category
 from
     partmaster;
+
+
+-- 8) List the most recent supply details with information on Product name, price and no. of days elapsed since the latest supply.
+select 
+    pm.name as name,
+    pm.price as price,
+    dateofsupply,
+    datediff(day,sd.dateofsupply,current_date()) as days_elapsed
+from 
+    partmaster pm
+inner join supplydetails sd on sd.pid = pm.pid
+where sd.dateofsupply in (select max(dateofsupply) from supplydetails);
+
+
+-- 9) List the names of the suppliers who have supplied exactly 100 units of part P1.
+
+select 
+    name    
+from
+    suppliermaster sm
+inner join supplydetails sd on sd.sid = sm.sid
+inner join partmaster pm on pm.pid = sd.pid
+where pm.category = 1
+group by ;
+
+
+
+select * from partmaster;
